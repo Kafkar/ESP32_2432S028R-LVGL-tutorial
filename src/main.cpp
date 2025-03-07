@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
+// include the installed LVGL- Light and Versatile Graphics Library - https://github.com/lvgl/lvgl
 #include <lvgl.h>
 
 // include the installed "TFT_eSPI" library by Bodmer to interface with the TFT Display - https://github.com/Bodmer/TFT_eSPI
@@ -22,22 +23,30 @@ TFT_eSPI tft = TFT_eSPI();
 #define XPT2046_CLK 25  // T_CLK
 #define XPT2046_CS 33   // T_CS
 
+// Create a instance of the SPIClass and XPT2046_Touchscreen classes
 SPIClass touchscreenSPI = SPIClass(VSPI);
 XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
 
+// Define the size of the TFT display
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 320
 
+// Define the size of the buffer for the TFT display
+#define DRAW_BUF_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
+
 // Touchscreen coordinates: (x, y) and pressure (z)
 int x, y, z;
+
+// Create variables for the LVGL objects
 lv_obj_t *led1;
 lv_obj_t *led3;
 lv_obj_t * btn_label;
+
+// Create a variable to store the LED state
 bool ledsOff = false;
 bool rightLedOn = true;
 
-
-#define DRAW_BUF_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
+// Create a buffer for drawing
 uint32_t draw_buf[DRAW_BUF_SIZE / 4];
 
 
